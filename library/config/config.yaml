@@ -1,0 +1,47 @@
+# 环境配置
+environment: local
+
+app:
+    # 邮箱配置
+    alert_mail_config:
+        nickname: ''
+        account: ''
+        password: ''
+        mail_server: 'smtp.qq.com'
+        mail_port: 465
+
+    # 日志配置
+    log_config:
+        # 屏幕输出
+        format: "%(asctime)s %(levelname)s [%(filename)s %(funcName)s line:%(lineno)d]: %(message)s"
+        level: INFO
+        datefmt: NULL
+
+        # 文件输出
+        filename: "app.log"
+        maxBytes: 104857600     # 100M
+        backupCount: 3          # 3备份
+        encoding: utf-8
+
+db:
+    # mysql配置
+    mysql_config:
+        host: 127.0.0.1
+        user: root
+        password: "Password123!"
+        database:
+        port: 3306
+        charset: utf8mb4
+        autocommit: True
+
+    # redis 配置
+    redis_config:
+        host: 127.0.0.1
+        port: 6379
+        db: 0
+        password: "Password123!"
+        socket_timeout: 30                  # socket命令响应时间
+        socket_connect_timeout: 30          # socket连接超时时间
+        retry_on_timeout: True              # 命令超时后，将会重试一次, 重试成功则正常返回; 失败则抛出timeout异常
+        health_check_interval: 30           # 每隔30s进行健康检查
+        decode_responses: True              # 响应数据格式是str，而不是byte
