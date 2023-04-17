@@ -30,7 +30,7 @@ def deal_verify_code(verify_code: str, verify_code_token: str):
 
 
 @verify_code_app.get("/verify_code", response_model=VerifyCodeOut, description="生成四位验证码，包含数字+大写字母+小写字母")
-async def get_verify_code():
+async def verify_code():
     characters = string.digits + string.ascii_uppercase + string.ascii_lowercase
     captcha_str = ''.join(random.sample(characters, 4))
     img = ImageCaptcha(160, 60).generate_image(captcha_str)
