@@ -25,8 +25,8 @@ def deal_verify_code(verify_code: str, verify_code_token: str):
     if aes_decrypt(key=AESConfig.KEY, iv=AESConfig.IV, plaintext=verify_code_token).lower() == verify_code.lower():
         return True
     else:
-        raise HTTPException(status_code=ResponseStatusCode.IMAGE_CODE_ERR.code,
-                            detail=ResponseStatusCode.IMAGE_CODE_ERR.message)
+        raise HTTPException(status_code=ResponseStatusCode.VERIFY_CODE_ERR.code,
+                            detail=ResponseStatusCode.VERIFY_CODE_ERR.message)
 
 
 @verify_code_app.get("/verify_code", response_model=VerifyCodeOut, description="生成四位验证码，包含数字+大写字母+小写字母")
