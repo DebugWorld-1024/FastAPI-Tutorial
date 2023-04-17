@@ -41,7 +41,7 @@ class TokenInfo(BaseModel):
 
 
 class VerifyCodeOut(BaseModel):
-    verify_image: str = Field(title="验证码", example='ot3R')
+    verify_image: str = Field(title="验证码", example='data:image/png;base64,xxxx')
     verify_code_token: str = Field(title="验证码token", example='HsQK3Jsc6BmKg+TZYkjEjQ==')
 
 
