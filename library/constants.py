@@ -42,6 +42,12 @@ class AESConfig:
     IV = 'dKIBF3rrjBfYrcZ9'
 
 
+class JWTConfig:
+    ALGORITHM = "HS256"
+    ACCESS_TOKEN_EXPIRE_MINUTES = 1 * 24 * 60
+    SECRET_KEY = "bjqWLWEmaWBznBJYHM6QP3z5WOXiHVuvp2DavZqdGBOD2rtmLzyHb7LjPrXIk9r6"
+
+
 class TimeZone:
     """时区"""
     pass

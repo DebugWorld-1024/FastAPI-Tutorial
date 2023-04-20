@@ -32,11 +32,17 @@ class CodeEnum(str, Enum):
     fail = "失败"
 
 
+class AuditLog(BaseModel):
+    action_type: str = Field(title='操作类型', default=None)
+    # action_content: str = Field(title='操作内容', default=None)
+    request_body: str = Field(title='请求参数', default=None)
+
+
 class TokenInfo(BaseModel):
     user_id: int = Field(title="用户ID", example=1)
     username: str = Field(title="用户名", example="admin")
-    # password: str = Field(title="密码", example="OryE/KAY1JwhSyX+tM5mFQ==")
-    scopes: list = Field(title="scopes", example=["Backend"])
+    # password: str = Field(title="密码", example="yO/tB92KdA+Om4Jmj0/sdQ==")
+    scopes: list = Field(title="scopes", example=["Write"])
     exp: int = Field(default=None, title="Token 有效期")
 
 
@@ -56,9 +62,5 @@ class UpdatePasswordIn(BaseModel):
     verify_code: str = Field(default=None, title="验证码", example='ot3R')
     verify_code_token: str = Field(default=None, title="验证码token", example='HsQK3Jsc6BmKg+TZYkjEjQ==')
     username: str = Field(title='用户名', example='test')
-    old_password: str = Field(title='旧密码', example='OryE/KAY1JwhSyX+tM5mFQ==')
-    new_password: str = Field(title='新密码', example='OryE/KAY1JwhSyX+tM5mFQ==')
-
-
-class UpdatePasswordOut(BaseModel):
-    username: str = Field(title='用户名字', example='admin')
+    old_password: str = Field(title='旧密码', example='yO/tB92KdA+Om4Jmj0/sdQ==')
+    new_password: str = Field(title='新密码', example='yO/tB92KdA+Om4Jmj0/sdQ==')
