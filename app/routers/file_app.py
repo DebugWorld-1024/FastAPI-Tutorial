@@ -13,7 +13,7 @@ from app.response_status_code import ResponseStatusCode
 file_app = APIRouter()
 
 current_path = os.path.split(os.path.realpath(__file__))[0]
-root_path = os.path.join(current_path, '../../', 'workspace')      # TODO 路径
+root_path = os.path.join(current_path, '../../', 'workspace')
 
 
 @file_app.post('/db/file',

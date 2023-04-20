@@ -1,4 +1,5 @@
 import os
+import json
 import time
 import asyncio
 import uvicorn
@@ -104,7 +105,7 @@ async def response_validation_exception_handler(request: Request, exc: Validatio
 @app.exception_handler(Exception)
 async def exception_handler(request: Request, exc: Exception) -> JSONResponse:
     """
-    重写未知异常
+    重写未知异常, Exception不跳转到中间件
     :param request: 请求信息
     :param exc: 异常信息
     :return: 响应信息
@@ -114,7 +115,9 @@ async def exception_handler(request: Request, exc: Exception) -> JSONResponse:
         'message': str(exc),
         "data": None
     }
-    return JSONResponse(status_code=200, content=content)
+    background = BackgroundTask(background_task_app.background_task_middleware, request,
+                                bytes(json.dumps(content), encoding='utf-8'))
+    return JSONResponse(status_code=200, content=content, background=background)
 
 
 @app.middleware('http')
