@@ -5,8 +5,8 @@ from typing import List
 from urllib import parse
 from fastapi import APIRouter, HTTPException, UploadFile, Query, Security, responses
 
-from app.data_model import response_data
 from app.routers.login_app import verify_token
+from app.data_model import response_data, FileTypeEnum
 from app.response_status_code import ResponseStatusCode
 
 
@@ -21,7 +21,7 @@ root_path = os.path.join(current_path, '../../', 'workspace')
                description='上传/更新文件')
 async def post_file(file: UploadFile):
     file_type = file.filename.split(".")[-1]
-    if file_type not in ["csv", "json", "xls", "xlsx"]:
+    if file_type not in ["csv", "json", "xlsx"]:
         raise HTTPException(status_code=ResponseStatusCode.FILE_TYPE_ERR.code,
                             detail=ResponseStatusCode.FILE_TYPE_ERR.message)
 
@@ -59,17 +59,18 @@ async def delete_file(files_name: List[str] = Query(description="文件名字", 
 @file_app.get('/db/file',
               dependencies=[Security(verify_token, scopes=["Read"])],
               description="获取文件名")
-async def get_file():
+async def get_file(file_type: FileTypeEnum = Query(default=None, description='文件类型')):
     files = []
     if not os.path.exists(root_path):
         os.makedirs(root_path)
     for file in os.listdir(root_path):
         path = os.path.join(root_path, file)
         if not file.startswith('.') and not os.path.isdir(path):        # 过滤文件夹和隐藏文件
-            files.append({
-                'file_name': file,
-                'file_size': os.path.getsize(path)
-            })
+            if not (file_type and file.split('.')[-1] != file_type):
+                files.append({
+                    'file_name': file,
+                    'file_size': os.path.getsize(path)
+                })
 
     return response_data(data=files)
 

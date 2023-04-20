@@ -27,9 +27,10 @@ def response_data(*, code: int = ResponseStatusCode.OK.code,
     )
 
 
-class CodeEnum(str, Enum):
-    success = "成功"
-    fail = "失败"
+class FileTypeEnum(str, Enum):
+    file_type_json = "json"
+    file_type_csv = "csv"
+    file_type_xlsx = "xlsx"
 
 
 class AuditLog(BaseModel):
