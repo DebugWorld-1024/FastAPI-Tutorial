@@ -77,7 +77,7 @@ async def get_file():
 @file_app.get('/db/download_file',
               dependencies=[Security(verify_token, scopes=["Read"])],
               description="下载文件")
-async def download_file(file_name: str = Query(description="文件名字", example="test.xlsx")):
+async def download_file(file_name: str = Query(description="文件名字", example="test.csv")):
     return responses.FileResponse(path=os.path.join(root_path, file_name), filename=file_name)
 
 
