@@ -14,7 +14,7 @@ background_task_app = APIRouter()
 background_task有三种方式
 1、中间件(middleware)
 2、依赖注入(Depends)
-3、请求方法里(BackgroundTasks)
+3、单个请求方法中(BackgroundTasks)
 """
 
 
