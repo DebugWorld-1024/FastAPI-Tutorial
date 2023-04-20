@@ -1,4 +1,5 @@
 import os
+import time
 import asyncio
 import uvicorn
 from fastapi.responses import JSONResponse
@@ -114,6 +115,45 @@ async def exception_handler(request: Request, exc: Exception) -> JSONResponse:
         "data": None
     }
     return JSONResponse(status_code=200, content=content)
+
+
+@app.middleware('http')
+async def add_process_time_header(request: Request, call_next):
+    """
+    记录每个Request运行时间(ms), 添加到header
+    :param request:
+    :param call_next:
+    :return:
+    """
+
+    # request_body = dict()
+    # request_body = await request.receive()
+    #
+    # async def set_body():
+    #     return request_body
+    #
+    # request._receive = set_body
+
+    request.state.audit_log = None
+    start_time = time.time() * 1000
+    response = await call_next(request)
+    process_time = time.time() * 1000 - start_time
+    response.headers['X-Process-Time'] = str(process_time)                                  # 添加自定义的以“X-”开头的请求头
+    # return response
+
+    response_body = b""
+    async for item in response.body_iterator:                                               # 获取响应数据
+        response_body += item
+
+    response.background = BackgroundTask(background_task_app.background_task_middleware,
+                                         request, response_body)                            # 后台运行，防止阻塞
+    return Response(
+        content=response_body,
+        status_code=response.status_code,
+        headers=response.headers,
+        media_type=response.media_type,
+        background=response.background
+    )
 
 
 @app.get('/health', tags=['健康检查'], response_model=str)
