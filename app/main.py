@@ -16,7 +16,7 @@ from app.response_status_code import ResponseStatusCode
 from app.routers import login_app, verify_code_app, file_app, background_task_app
 
 
-app = FastAPI(title="FastAPI Tutorial", version="v1.0", docs_url=None, redoc_url=None)          # Swagger交互文档运行本地js
+app = FastAPI(title="FastAPI Tutorial", version="v1.0", docs_url=None, redoc_url=None)          # 禁用自动文档，因为它们默认使用CDN。
 app.mount(path="/static", name="static",                                                        # Swagger本地js位置
           app=StaticFiles(directory=os.path.join(os.path.split(os.path.realpath(__file__))[0], 'static')))
 
@@ -202,3 +202,11 @@ if __name__ == '__main__':
     # "workers" flag is ignored when reloading is enabled.
     uvicorn.run("app.main:app", host='127.0.0.1', port=8000, workers=2, reload=True)
 
+"""
+TODO
+1、日志
+2、FastAPI 升级
+3、中间件处理request response
+4、服务器异常
+5、jwt
+"""

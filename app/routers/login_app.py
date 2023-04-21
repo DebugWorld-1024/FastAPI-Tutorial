@@ -144,7 +144,8 @@ def verify_password(password: str):
                             detail=ResponseStatusCode.PASSWORD_ERR.message)
 
 
-@login_app.post("/login", response_model=SystemLoginOut,
+@login_app.post("/login",
+                response_model=SystemLoginOut,
                 description="采用JWT认证，在Header添加Authorization字段传输token。")
 async def login(request: Request,
                 verify_code: Union[str, None] = Body(default=None, example='ot3R'),
@@ -155,17 +156,17 @@ async def login(request: Request,
         'request_body': json.dumps({"username": form_data.username, 'password': form_data.password})
     })
 
-    if verify_code and verify_code_token:
+    if verify_code and verify_code_token:                                       # 校验验证码
         deal_verify_code(verify_code, verify_code_token)
 
-    user_info = authenticate_user(form_data.username, form_data.password)
+    user_info = authenticate_user(form_data.username, form_data.password)       # 校验账号密码
     data = {
         "user_id": user_info['user_id'],
         "username": user_info['username'],
         "password": user_info['password'],
         "scopes": form_data.scopes
     }
-    access_token = create_access_token(token_info=TokenInfo(**data),
+    access_token = create_access_token(token_info=TokenInfo(**data),            # 生成token
                                        expires_delta=timedelta(minutes=JWTConfig.ACCESS_TOKEN_EXPIRE_MINUTES))
 
     result = {
