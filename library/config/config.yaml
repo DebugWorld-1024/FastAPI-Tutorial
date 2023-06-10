@@ -1,4 +1,4 @@
-# 环境配置
+# 环境配置 local dev test master
 environment: local
 
 app:
